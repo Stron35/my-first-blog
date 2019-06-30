@@ -9,15 +9,12 @@
 		<p>It's work!</p>
 		<a href="/">My page vk</a>
 	</div>
-	<div>
-		<p>published: 30.06.2019, 14:37</p>
-		<h2><a href="">My first post</a></h2>
-		<p>Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-	</div>
-	<div>
-		<p>published: 30.06.2019, 14:38</p>
-		<h2><a href="">My second post</a></h2>
-		<p>Таким образом сложившаяся структура организации способствует подготовки и реализации форм развития. Значимость этих проблем настолько очевидна, что рамки и место обучения кадров позволяет выполнять важные задания по разработке новых предложений. Повседневная практика показывает, что рамки и место обучения кадров требуют определения и уточнения форм развития. Таким образом постоянный количественный рост и сфера нашей активности представляет собой интересный эксперимент проверки форм развития.</p>
-	</div>
+	{% for post in posts %}
+		<div>
+			<p>published:{{post.published_date}}</p>
+			<h1><a href=""></a>{{post.title}}</h1>
+			<p>{{post.body|linebreaksbr}}</p>
+		</div>
+	{% endfor %}
 </body>
 </html>
