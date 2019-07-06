@@ -5,6 +5,10 @@
 	    <div class="post">
 	        <h1 class="post-name"><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h1>
 	        <p>{{ post.text|linebreaksbr }}</p>
+	        <div class="post-image">
+	        	<img src="{{MEDIA_URL}}{{post.images}}" alt=""> 
+	        	<!-- Надо поменять в css -->
+	        </div>
 	        <div class="date">
 	            <p>Опубликовано: {{ post.published_date }}</p>
 	        </div>
