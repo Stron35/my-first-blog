@@ -28,7 +28,7 @@ class PostCreate(CreateView):
 		new_post.save()
 		print(self.request.FILES.getlist('gallery'))
 		for item in self.request.FILES.getlist('gallery'):
-			Gallery.objects.create(image = item, post = new_post)	
+			Gallery.objects.create(image = item, post = new_post)
 		return super().form_valid(form)
 
 	def get(self, request):

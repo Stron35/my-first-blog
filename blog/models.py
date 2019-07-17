@@ -4,6 +4,8 @@ from django.urls import reverse
 from django.utils import timezone
 from django.utils.text import slugify
 from django.contrib.auth.models import User
+from PIL import Image
+#from .imageresize import *
 
 # Create your models here.
 def generate_slug(s):
@@ -12,15 +14,14 @@ def generate_slug(s):
 
 def generate_image_path(instance, filename):
 	time_now=timezone.now()
-	image_upload_path = '/'.join(['post_images',str(time_now.year),str(time_now.month),str(time_now.day),str(filename)])
-	print(image_upload_path)
+	slug = instance.post.slug
+	image_upload_path = '/'.join(['post_images',str(time_now.year),str(time_now.month),str(time_now.day),str(slug),str(filename)])
 	return image_upload_path
 
 class Post(models.Model):
 	author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 	title = models.CharField(max_length = 100)
 	text = models.TextField()
-	# images = models.ImageField(upload_to=generate_image_path, null=True, blank=True)
 	slug = models.SlugField(max_length=150, blank=True)
 	create_date = models.DateTimeField(default=timezone.now)
 	published_date = models.DateTimeField(blank = True, null = True)
@@ -43,5 +44,24 @@ class Post(models.Model):
 class Gallery(models.Model):
 	post = models.ForeignKey('Post', on_delete=models.CASCADE, related_name='gallery')
 	image = models.ImageField(upload_to=generate_image_path, null=True, blank=True)
-	
+
+	def save(self, *args, **kwargs):
+		super(Gallery, self).save()
+		image = Image.open(self.image.path)
+		(width, height) = image.size
+		if width<=800:
+			factor = 1
+		else:
+			factor = width/height
+			width = 800
+			height = width/factor
+		print(factor)
+		size = (int(width), int(height))
+		print(size)
+		image = image.resize(size, Image.ANTIALIAS)
+		print(self.image.path)
+		print(image.size)
+		image.save(self.image.path)
+
+#	def save(self, *args, **kwargs):
 
